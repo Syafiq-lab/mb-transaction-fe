@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <!-- Search Box -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by Account Number or Description"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Customer Id</th>
+      <th>Account Number</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let transaction of transactions">
+      <td>{{ transaction.customerId }}</td>
+      <td>{{ transaction.accountNumber }}</td>
+      <td>{{ transaction.trxAmount }}</td>
+      <td>{{ transaction.description }}</td>
+      <td>{{ transaction.trxDate }}</td>
+      <td>{{ transaction.trxTime }}</td>
+      <td>
+        <button
+          class="btn btn-primary"
+          (click)="openUpdateModal(updateModal, transaction)"
+        >
+          Update
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="page === 0">
+        <a class="page-link" (click)="previousPage()">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="nextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Update Modal -->
+  <ng-template #updateModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Update Transaction</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitUpdate()">
+        <div class="mb-3">
+          <label for="accountNumber" class="form-label">Account Number</label>
+          <input type="text" class="form-control" id="accountNumber" [(ngModel)]="selectedTransaction.accountNumber" name="accountNumber" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" [(ngModel)]="selectedTransaction.description" name="description">
+        </div>
+        <div class="mb-3">
+          <label for="trxAmount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="trxAmount" [(ngModel)]="selectedTransaction.trxAmount" name="trxAmount" required>
+        </div>
+        <div class="mb-3">
+          <label for="trxDate" class="form-label">Date</label>
+          <input type="date" class="form-control" id="trxDate" [(ngModel)]="selectedTransaction.trxDate" name="trxDate">
+        </div>
+        <div class="mb-3">
+          <label for="trxTime" class="form-label">Time</label>
+          <input type="time" class="form-control" id="trxTime" [(ngModel)]="selectedTransaction.trxTime" name="trxTime">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </ng-template>
+</div>
